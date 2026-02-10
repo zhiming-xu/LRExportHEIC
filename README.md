@@ -5,7 +5,7 @@ A plugin to allow Lightroom to export HEIC files.
 There are two components:
 
 - The plugin itself, which is the component that interfaces with Lightroom using the Lightroom SDK, written in Lua.
-- The CLI component, which takes an input file path and an output file path, and renders the HEIC image to the output file path. It is written in Swift.
+- The CLI component, which can convert a single input file or batch-convert a directory of `.avif` files into `.heic`. It is written in Swift.
 
 ## Compatibility
 
@@ -32,6 +32,27 @@ This plugin is using Lightroom's SDK in a way that was probably not intended, so
 - The files will have a `.jpg` extension. This is expected. You can rename them to use a `.heic` extension or leave them with the `.jpg` extension. Most applications won't care about the extension, and will be able to use the file like normal. 
 
 The plugin also adds a new item under "Export To" named "Export HEIC". This does nothing more than hide the original File Settings panel so you don't accidentally make changes there instead of the "HEIC settings" panel. However, this is entirely optional and only a cosmetic change.
+
+### CLI usage
+
+Single file:
+
+```bash
+LRExportHEIC --input-file /path/in.avif /path/out.heic --quality 0.8
+```
+
+Batch convert a directory (recursively):
+
+```bash
+LRExportHEIC --input-dir /path/to/folder --quality 0.8 --jobs 6 --verbose
+```
+
+Notes:
+- Batch mode writes `.heic` next to each input file and overwrites existing outputs.
+- You can specify either `--quality` or `--size-limit` (they are mutually exclusive).
+- If neither is provided, the CLI defaults to `--quality 0.8` for both single-file and batch mode.
+- If `--jobs` is not provided, batch mode defaults to the number of performance cores (or physical cores when that information isn't available).
+- Metadata (EXIF/XMP/etc.) is preserved by default.
 
 ## How does it work? 
 

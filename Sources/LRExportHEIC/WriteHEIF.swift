@@ -8,7 +8,8 @@ func writeHEIF(
   shouldUseHEIF10: Bool,
   verbose: Bool
 ) throws {
-  let opts = [kCGImageDestinationLossyCompressionQuality: quality] as [CIImageRepresentationOption: Any]
+  let opts = [kCGImageDestinationLossyCompressionQuality: quality] as
+    [CIImageRepresentationOption: Any]
   let ctx = CIContext()
 
   if verbose {
