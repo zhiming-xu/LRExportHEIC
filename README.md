@@ -19,19 +19,36 @@ Tested on AVIF files exported by Lightroom (Cloud based).
 
 ### CLI usage
 
-Single file:
-
 ```bash
-LRExportHEIC --input-file /path/in.avif /path/out.heic --quality 0.8
+Usage: LRExportHEIC <output-file> [--input-file] [--input-dir] [--quality] [--size-limit] [--min-quality] [--max-quality] [--color-space] [--jobs] [--verbose]
+
+Export input image file as HEIC, or batch convert .avif files in a directory
+
+Options:
+   input-file Path to input image file
+    input-dir Root directory to scan for .avif files (recursively). Output is written next to inputs
+      quality Compression quality between 0.0-1.0 (default: 0.8). Cannot be used with --size-limit
+   size-limit Limit the size in bytes of the resulting image file, instead of specifying a quality directly. Cannot be used with --quality
+  min-quality Minimal allowed compression quality, between 0.0-1.0, if --size-limit is used. Default: 0.0
+  max-quality Maximal allowed compression quality, between 0.0-1.0, if --size-limit is used. Default: 1.0
+  color-space Name of the output color space. Omit to use input image color space
+         jobs Number of files to process in parallel when using --input-dir. Default: performance core count
 ```
 
-Batch convert a directory (recursively):
+#### Examples
+- Single file:
 
-```bash
-LRExportHEIC --input-dir /path/to/folder --quality 0.8 --jobs 6 --verbose
-```
+  ```bash
+  LRExportHEIC --input-file /path/in.avif /path/out.heic
+  ```
 
-Notes:
+- Batch convert a directory (recursively):
+
+  ```bash
+  LRExportHEIC --input-dir /path/to/folder
+  ```
+
+#### Notes:
 - Batch mode writes `.heic` next to each input file and overwrites existing outputs.
 - You can specify either `--quality` or `--size-limit` (they are mutually exclusive).
 - If neither is provided, the CLI defaults to `--quality 0.8` for both single-file and batch mode.
